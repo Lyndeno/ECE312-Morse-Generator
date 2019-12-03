@@ -22,10 +22,15 @@
 
 #define PIN_BUZZER PORTD5
 
+#define PORT_LED PORTD
+
+#define PIN_LED PORTD4
+
+/*
 #ifndef F_CPU
 #define F_CPU 1000000
 #endif
-
+*/
 #endif
 
 

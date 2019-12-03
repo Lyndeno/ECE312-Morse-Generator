@@ -18,7 +18,7 @@
 
 
 // Externally referenced, change main.h if changing amount of strings
-char messages[TOT_MESSAGES][MESSAGE_LENGTH] = { "Hello", "SOS", "Goodbye" };
+char messages[TOT_MESSAGES][MESSAGE_LENGTH] = { "Hello", "Goodbye", "SOS", "ECE 312", "Beep" };
 
 /*defining functions */
 void init_gpio(void);
@@ -33,12 +33,18 @@ int main (void)
 	/* Insert system clock initialization code here (sysclk_init()). */
 	 lcd_init(LCD_DISP_ON);
 	 
+	 
+	 
 	 //char messages[TOT_MESSAGES][10] = { "Hello", "SOS", "Goodbye" };
 	 
 	 lcd_clrscr();
 	
 	 init_gpio();
 	 int cursor = 0;
+	 
+	 set_buzzer(ON);
+	 _delay_ms(1000);
+	 set_buzzer(OFF);
 	  
 	while (1){
 		// Refresh the menu prompt
@@ -73,6 +79,11 @@ void init_gpio(void) {
 	
 	ADCSRA |= (1<<ADEN)|(1<<ADPS0)|(1<<ADPS1)|(1<<ADPS2); // enable the ADC, 128 prescale
 	
+	TCCR0A |= ( (1<<WGM01)|(1<<COM0B0));
+	TCCR0B |= ( 1<<CS01 );
+	
+	OCR0A = 0x6F;
+	
 	DDR(PORT_LR) &= ~( (1<<(PIN_LEFT))| (1<<PIN_RIGHT) ); // the 3 push buttons are inputs
 	PORT(PORT_LR) |= ((1<<PIN_LEFT)| (1<<PIN_RIGHT) );
 
@@ -80,7 +91,10 @@ void init_gpio(void) {
 	PORT(PORT_ENTER)|=  (1<<PIN_ENTER);
 
 	DDR(PORT_BUZZER) |= (1<<PIN_BUZZER); //the buzzer is the output
-
+	
+	DDR(PORT_LED) |= (1<<PIN_LED); //the led is the output
+	PORT(PORT_LED) &= ~(1<<PIN_LED); // Turn the led off
+	//DDRD |= (1<<PORTD5);
 }
 
 

@@ -25,7 +25,7 @@ void unit_silence(void);
 void set_buzzer(bool);
 
 #define MORSE_LENGTH 6
-#define UNIT_LENGTH 25
+#define UNIT_LENGTH 250
 
 #define ON 1
 #define OFF 0

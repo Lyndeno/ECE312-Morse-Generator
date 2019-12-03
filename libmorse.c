@@ -96,16 +96,11 @@ void translate_message() {
 // Play back the morse code on the buzzer
 void play_morse() {
 	for (int i = 0; morse_code[i] != '\0'; i++ ) {
-		switch (morse_code[i]) {
-			case '.':
-				dot();
-			case '_':
-				dash();
-			case '/':
-				space_silence();
-			case ':':
-				letter_silence();
-		}
+		if ( morse_code[i] == '.') {
+			dot();
+		} else if ( morse_code[i] == '_' ) { dash(); }
+			else if ( morse_code[i] == '/') { space_silence(); }
+				else if ( morse_code[i] == ':') { letter_silence(); }
 		
 		if ( ( morse_code[i+1] == '/' ) || ( morse_code[i+1] == ':') ) {}
 		if ( ( morse_code[i] != '/' ) || ( morse_code[i+1] != ':') ) { unit_silence(); }
@@ -152,10 +147,20 @@ void unit_silence() {
 
 // Set the buzzer state
 void set_buzzer(bool state) {
-	switch (state) {
+	/*switch (state) {
 		case ON:
-			PORT(PORT_BUZZER) |=  (1<<PIN_BUZZER);
+			DDR(PORT_BUZZER) |=  (1<<PIN_BUZZER);
 		case OFF:
-			PORT(PORT_BUZZER) &= ~(1<<PIN_BUZZER);
+			DDR(PORT_BUZZER) &= ~(1<<PIN_BUZZER);
+	}*/
+	
+	if( state == ON ){
+		DDR(PORT_BUZZER) |=  (1<<PIN_BUZZER);
+		PORT(PORT_LED) |=  (1<<PIN_LED);
+		//DDRD |= (1<<PORTD5);
+	} else if ( state == OFF ) {
+		DDR(PORT_BUZZER) &= ~(1<<PIN_BUZZER);
+		PORT(PORT_LED) &= ~(1<<PIN_LED);
+		//DDRD &= ~(1<<PORTD5);
 	}
 }
